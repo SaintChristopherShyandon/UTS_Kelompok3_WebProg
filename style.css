@@ -1,115 +1,63 @@
-/* RESET dan FONT */
 body {
-    font-family: 'Roboto', sans-serif;
-    margin: 0;
-    background-color: #f4f4f4;
+    min-height: 100vh;
     display: flex;
     justify-content: center;
     align-items: center;
-    min-height: 100vh;
+    width: 100%;
+    margin: 0;
 }
 
 .game-screen {
     width: 90%;
     max-width: 900px;
     background-color: white;
-    padding: 20px;
-    border: 5px solid #333;
+    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
     border-radius: 10px;
-    box-shadow: 0 10px 20px rgba(0,0,0,0.1);
-    display: none;
     box-sizing: border-box;
+    display: none !important;
 }
 
 .game-screen.active {
-    display: block;
+    display: flex !important;
 }
 
-/* START SCREEN STYLING */
-#start-screen {
+#start-screen,
+#game-over-screen {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
     text-align: center;
 }
+
+#start-screen.active {
+    display: flex !important;
+}
+
+#main-game-screen.active {
+    display: block !important;
+}
+
 .game-logo {
     font-size: 50px;
     display: block;
     margin-bottom: 10px;
 }
-#avatar-selection {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    margin: 20px 0;
-}
-/* Styling untuk tag IMG avatar di Start Screen */
-#current-avatar-img {
-    width: 100px; 
-    height: 100px;
-    margin: 0 20px;
-    border-radius: 50%; 
-    object-fit: cover;
-    border: 3px solid #007bff;
-}
 
-/* MAIN GAME HEADER & STATUS */
-header {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    padding-bottom: 15px;
-    border-bottom: 1px solid #ccc;
-    margin-bottom: 15px;
-    font-weight: bold;
-}
-.money-box {
-    color: green;
-}
-#status-area {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 15px;
-    margin-bottom: 20px;
-}
-.status-item {
-    flex: 1 1 45%;
-}
-progress {
-    width: 100%;
-    height: 15px;
-    margin-top: 5px;
-}
-
-/* GAME LAYOUT (RESPONSIVE) */
-.game-layout {
-    display: flex;
-    flex-direction: column; 
-    gap: 20px;
-}
-@media (min-width: 768px) {
-    .game-layout {
-        flex-direction: row; 
-    }
-    #map-area {
-        flex: 2;
-    }
-    #interaction-panel {
-        flex: 1;
-    }
-}
-
-/* MAP AREA & LOCATIONS */
 #map-area {
     position: relative;
     min-height: 350px;
     border: 2px dashed #a0a0a0;
     background-color: #e6ffe6;
     border-radius: 8px;
+    overflow: hidden;
 }
 
 .location {
     position: absolute;
     width: 100px;
     height: 100px;
-    background-color: rgba(135, 206, 250, 0.7);
+    background-color: rgba(135, 206, 250, 0.8);
     border-radius: 50%;
     display: flex;
     justify-content: center;
@@ -117,45 +65,48 @@ progress {
     text-align: center;
     font-size: 0.9em;
     padding: 5px;
+    box-shadow: 0 0 5px rgba(0, 0, 0, 0.3);
 }
 
-/* Posisi Lokasi */
-#loc-home { top: 20%; left: 10%; background-color: #f0f8ff; }
-#loc-beach { top: 10%; right: 10%; background-color: #fffacd; }
-#loc-lake { bottom: 10%; left: 15%; background-color: #add8e6; }
-#loc-temple { top: 50%; left: 50%; transform: translate(-50%, -50%); background-color: #faebd7; }
-#loc-mountain { bottom: 20%; right: 10%; background-color: #c0c0c0; }
+#loc-home {
+    top: 20%;
+    left: 10%;
+    background-color: #f0f8ff;
+}
 
-/* Styling untuk tag IMG avatar di Map Area */
+#loc-beach {
+    top: 10%;
+    right: 10%;
+    background-color: #fffacd;
+}
+
+#loc-lake {
+    bottom: 10%;
+    left: 15%;
+    background-color: #add8e6;
+}
+
+#loc-temple {
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background-color: #faebd7;
+}
+
+#loc-mountain {
+    bottom: 20%;
+    right: 10%;
+    background-color: #c0c0c0;
+}
+
 #player-avatar-img {
     position: absolute;
-    width: 40px;
-    height: 40px;
-    border-radius: 50%;
-    object-fit: cover;
     z-index: 10;
-    transition: left 0.5s ease, top 0.5s ease; /* Transisi untuk gerakan halus */
-    transform: translate(-50%, -50%); /* Menjaga titik tengah pada koordinat (%) */
-    border: 2px solid #333;
-}
-
-/* INTERACTION PANEL & ACTIVITIES */
-#interaction-panel {
-    padding: 10px;
-    border: 1px solid #ddd;
-    border-radius: 8px;
-    background-color: #fafafa;
-    position: relative;
-}
-
-#activity-buttons button {
-    width: 100%;
-    padding: 10px;
-    margin-bottom: 8px;
-    border: 1px solid #ccc;
-    background-color: #fff;
-    cursor: pointer;
-    text-align: left;
+    transition: left 0.5s ease, top 0.5s ease;
+    transform: translate(-50%, -50%);
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
 }
 
 .info-icon {
@@ -168,31 +119,32 @@ progress {
     font-size: 0.8em;
     cursor: help;
     margin-left: 10px;
+    line-height: 1.5;
 }
 
-/* NAVIGATION BUTTONS LAYOUT */
 #navigation-buttons {
     display: grid;
-    grid-template-areas: 
-        ". nav-up ." 
-        "nav-left . nav-right" 
+    grid-template-areas:
+        ". nav-up ."
+        "nav-left . nav-right"
         ". nav-down .";
     width: 150px;
     margin: 20px auto 0;
     gap: 5px;
 }
 
-#navigation-buttons button {
-    padding: 10px;
-    font-weight: bold;
-    border: 1px solid #333;
-    background-color: #e0e0e0;
-    cursor: pointer;
-    border-radius: 5px;
-    text-align: center;
+#nav-up {
+    grid-area: nav-up;
 }
 
-#nav-up { grid-area: nav-up; }
-#nav-left { grid-area: nav-left; }
-#nav-down { grid-area: nav-down; }
-#nav-right { grid-area: nav-right; }
+#nav-left {
+    grid-area: nav-left;
+}
+
+#nav-down {
+    grid-area: nav-down;
+}
+
+#nav-right {
+    grid-area: nav-right;
+}

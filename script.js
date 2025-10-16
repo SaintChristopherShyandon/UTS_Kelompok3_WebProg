@@ -18,7 +18,6 @@ let gameTime = { day: 1, hour: 9, minute: 43 };
 const TIME_RATIO = 1000; // 1000ms (1 detik nyata) = 1 menit game
 let gameInterval;
 
-// Menggunakan path file gambar untuk avatar
 const AVATAR_FILES = [
     'assets/avatar1.png', 
     'assets/avatar2.png', 
@@ -27,16 +26,14 @@ const AVATAR_FILES = [
 ];
 let currentAvatarIndex = 0;
 
-// Daftar Lokasi, Koordinat (x, y dalam %) dan Koneksi
 const LOCATION_DATA = {
     home:     { name: "Home", x: 10, y: 20, next: { right: 'beach', down: 'lake' } },
     beach:    { name: "Beach", x: 80, y: 10, next: { left: 'home', down: 'mountain' } },
     lake:     { name: "Lake", x: 15, y: 80, next: { up: 'home', right: 'temple' } },
-    temple:   { name: "Temple", x: 50, y: 50, next: { left: 'lake', right: 'mountain', up: 'beach' } }, 
+    temple:   { name: "Temple", x: 50, y: 35, next: { left: 'lake', right: 'mountain', up: 'beach' } }, 
     mountain: { name: "Mountain", x: 85, y: 80, next: { up: 'beach', left: 'temple' } }
 };
 
-// Data Aktivitas
 const ACTIVITIES = {
     home: [
         { name: "Get some meal", effect: { meal: 20 }, cost: 0, time: 5 },
@@ -152,20 +149,44 @@ function performActivity(activity) {
 
 
 // ====================================================================
-// C. DOM AND UI FUNCTIONS
+// C. DOM AND UI FUNCTIONS (Bootstrap Modifications)
 // ====================================================================
 
+// Mapping status keys ke warna dan ID progress bar di HTML
+const STATUS_BAR_MAPPING = {
+    meal: { id: 'prog-meal-bar', color: 'danger' },
+    sleep: { id: 'prog-sleep-bar', color: 'info' },
+    hygiene: { id: 'prog-hygiene-bar', color: 'primary' },
+    happiness: { id: 'prog-happiness-bar', color: 'warning' }
+};
+
 function updateStatusDisplay() {
-    document.getElementById('prog-meal').value = PLAYER.status.meal;
-    document.getElementById('prog-sleep').value = PLAYER.status.sleep;
-    document.getElementById('prog-hygiene').value = PLAYER.status.hygiene;
-    document.getElementById('prog-happiness').value = PLAYER.status.happiness;
-    
     document.getElementById('money-display').textContent = `💰 ${PLAYER.money.toLocaleString('id-ID')}`;
-    
+
     for (const key in PLAYER.status) {
         if (PLAYER.status[key] > 100) PLAYER.status[key] = 100;
         if (PLAYER.status[key] < 0) PLAYER.status[key] = 0;
+        
+        const value = PLAYER.status[key];
+        const barId = STATUS_BAR_MAPPING[key].id;
+        const barElement = document.getElementById(barId);
+        
+        // 1. Update lebar progress bar menggunakan inline style
+        barElement.style.width = `${value}%`;
+        
+        // 2. Update aria-valuenow untuk aksesibilitas
+        barElement.setAttribute('aria-valuenow', value);
+
+        // 3. Mengatur warna berdasarkan nilai status
+        let statusColor = STATUS_BAR_MAPPING[key].color;
+        
+        if (value < 25) {
+             statusColor = 'danger'; // Merah jika sangat rendah
+        } else if (value < 50) {
+            statusColor = 'warning'; // Kuning jika rendah
+        } 
+        // Mengganti semua kelas warna yang ada dan menerapkan warna status yang baru
+        barElement.className = `progress-bar bg-${statusColor}`;
     }
 }
 
@@ -178,11 +199,14 @@ function renderActivityButtons() {
     
     currentActivities.forEach(activity => {
         const button = document.createElement('button');
-        button.className = 'activity-btn';
+        
+        // Menerapkan kelas Bootstrap untuk tombol yang bagus dan lebar penuh
+        button.className = 'btn btn-outline-dark text-start position-relative';
         
         let buttonHTML = activity.name;
         
         if (activity.cost > 0 || activity.effect.money) {
+             // Ikon info tetap menggunakan custom CSS
              const infoIcon = `<span class="info-icon" title="${activity.info}">i</span>`;
              buttonHTML = activity.name + infoIcon;
         }
@@ -200,9 +224,8 @@ function renderActivityButtons() {
 
 function updateAvatarPosition() {
     const coords = LOCATION_DATA[PLAYER.locationKey];
-    const avatar = document.getElementById('player-avatar-img'); // Menggunakan ID IMG
+    const avatar = document.getElementById('player-avatar-img'); 
     
-    // Atur posisi
     avatar.style.left = `${coords.x}%`;
     avatar.style.top = `${coords.y}%`;
 }
@@ -249,6 +272,9 @@ function initializeGame() {
     updateAvatarPosition();
     // Tampilkan gambar avatar awal
     document.getElementById('current-avatar-img').src = AVATAR_FILES[currentAvatarIndex];
+    
+    // Panggil updateStatusDisplay untuk inisialisasi width progress bar Bootstrap
+    updateStatusDisplay(); 
 }
 
 // Handler untuk Start Button
@@ -260,7 +286,6 @@ document.getElementById('start-button').addEventListener('click', () => {
     }
 
     PLAYER.name = playerName;
-    // Set SRC untuk avatar di map
     document.getElementById('player-avatar-img').src = AVATAR_FILES[currentAvatarIndex];
 
     document.getElementById('start-screen').classList.remove('active');
