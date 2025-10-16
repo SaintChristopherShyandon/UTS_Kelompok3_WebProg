@@ -1,40 +1,38 @@
 <!DOCTYPE html>
 <html lang="id">
-
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"> 
     <title>UMN | Ucup Menjelajah Nusantara</title>
     <link rel="stylesheet" href="style.css">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet">
 </head>
-
 <body>
 
     <div id="start-screen" class="game-screen active">
-        <span class="game-logo">✈</span>
+        <span class="game-logo">✈️</span>
         <h1>Ucup Menjelajah Nusantara</h1>
-
+        
         <div id="avatar-selection">
             <button id="prev-avatar">&lt;</button>
-            <div id="current-avatar">👤</div>
+            <img id="current-avatar-img" src="" alt="Avatar Pilihan"> 
             <button id="next-avatar">&gt;</button>
         </div>
-
+        
         <input type="text" id="player-name-input" placeholder="Enter your name here..." required>
         <button id="start-button">Start Exploring</button>
     </div>
 
     <div id="main-game-screen" class="game-screen">
-
+        
         <header>
             <span id="greeting-text">Good Morning</span>
             <span id="game-time">Day 1 | 09:00</span>
             <span id="money-display" class="money-box">💰 230.000</span>
         </header>
-
+        
         <div id="status-area">
             <div class="status-item">Meal: <progress id="prog-meal" value="50" max="100"></progress></div>
             <div class="status-item">Sleep: <progress id="prog-sleep" value="50" max="100"></progress></div>
@@ -43,21 +41,22 @@
         </div>
 
         <main class="game-layout">
-
+            
             <div id="map-area">
-                <div id="player-avatar">👤</div>
+                <img id="player-avatar-img" src="" alt="Avatar Pemain di Map"> 
+                
                 <div class="location" id="loc-home" data-location="home">🏠 Home</div>
-                <div class="location" id="loc-beach" data-location="beach">🏖 Beach</div>
-                <div class="location" id="loc-lake" data-location="lake">🏞 Lake</div>
+                <div class="location" id="loc-beach" data-location="beach">🏖️ Beach</div>
+                <div class="location" id="loc-lake" data-location="lake">🏞️ Lake</div>
                 <div class="location" id="loc-temple" data-location="temple">🧘 Temple</div>
-                <div class="location" id="loc-mountain" data-location="mountain">⛰ Mountain</div>
+                <div class="location" id="loc-mountain" data-location="mountain">⛰️ Mountain</div>
             </div>
 
             <div id="interaction-panel">
                 <h2 id="current-location-text">You're at Home</h2>
                 <div id="activity-buttons">
-                </div>
-
+                    </div>
+                
                 <div id="navigation-buttons">
                     <button id="nav-up">▲</button>
                     <button id="nav-left">◀</button>
@@ -65,7 +64,7 @@
                     <button id="nav-right">▶</button>
                 </div>
             </div>
-
+            
         </main>
     </div>
 
@@ -77,5 +76,4 @@
 
     <script src="script.js"></script>
 </body>
-
 </html>
